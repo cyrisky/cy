@@ -1,0 +1,26 @@
+function CreateEvent() {
+  var spreadsheet = SpreadsheetApp.getActiveSheet();
+  var calendarId = spreadsheet.getRange('C3').getValue();
+  var eventCal = CalendarApp.getCalendarById(calendarId)
+  var signups = spreadsheet.getRange("B8:F").getValues();
+  var lr = spreadsheet.getLastRow();
+  var count = spreadsheet.getRange("B8:M"+lr+"").getValue();
+  for (x=0; x<count.length; x++) {
+          var shift = count[x];
+    
+    var summary = shift[0] + shift[1] + shift[2];
+    var startTime = shift[4];
+    var endTime = shift[5];
+    var guests = shift[7];
+    var description = shift[9] + shift[10] + shift[11] + shift[12] + shift[13];
+    var location = shift[8];
+    
+    var event = {
+      'location': location,
+      'description': description,
+      'guests': guests +',',
+      'sendInvites': 'True',
+    }
+    eventCal.createEvent(summary, startTime, endTime, event)
+  }
+}
